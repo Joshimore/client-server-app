@@ -2,7 +2,7 @@
 
 /*STRUCT TO DO: 
 
-  SOCKET() -> BIND() -> LISTEN() -> ACCEPT()
+  SOCKET()done -> BIND()done -> LISTEN()done -> ACCEPT()
 
 */
 
@@ -19,6 +19,7 @@ int main(){
 
     int connector; 
     struct sockaddr_in name;
+    int sockfd;
 
     //socket initialization SOCKET()
     if((connector = socket(AF_INET, SOCK_STREAM, 0)) < 0){
@@ -41,8 +42,8 @@ int main(){
         exit(1);
     }
 
-
-//    listen()
+    //listen init LISTEN()
+    listen(connector, 1);
 
 //    accept()
 
