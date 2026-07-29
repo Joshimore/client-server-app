@@ -8,18 +8,18 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <sys/types.h>
+#include <unistd.h>
 
 
 int main(){
 
-    int connector; 
-    struct sockaddr_in name;
-    int sockfd;
+    int connector, client_socket; 
+    struct sockaddr_in server_addr, client_addr;
+    socklen_t addr_len = sizeof(client_addr);
 
     //socket initialization SOCKET()
     if((connector = socket(AF_INET, SOCK_STREAM, 0)) < 0){
@@ -29,24 +29,31 @@ int main(){
 
     }
 
-    memset(&name, 0, sizeof(name));
-
-    name.sin_family = AF_INET;
-    name.sin_port = htons(9999); 
-    name.sin_addr.s_addr = htonl(INADDR_ANY);
+    client_addr.sin_family = AF_INET;
+    client_addr.sin_port = htons(9999); 
+    client_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
     //bind init BIND()
-    if (bind(connector, (struct sockaddr *) &name, sizeof(name)) < 0) {
+    if (bind(connector, (struct sockaddr *) &client_addr, addr_len) < 0) {
         
         perror("bind failed");
         exit(1);
     }
+        
+        //listen init LISTEN()
+        listen(connector, 1);
+        printf("Server started...");
+        printf("Listening port 9999");
 
-    //listen init LISTEN()
-    listen(connector, 1);
+        if ((client_socket = accept(connector, (struct sockaddr *) &client_addr, &addr_len)) < 0){
 
-//    accept()
+            perror("accept failed");
+            exit(1);
 
+        }
+
+    close(client_socket);
+    close(connector);
 
 
     return 0;
