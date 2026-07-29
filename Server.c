@@ -41,7 +41,10 @@ int main(){
     }
         
         //listen init LISTEN()
-        listen(connector, 5);
+        if(listen(connector, 5) < 0){
+
+           perror("listen error"); 
+        }
 
         printf("Server started...\n");
         
@@ -49,14 +52,14 @@ int main(){
         
         printf("Listening port 9999\n");
 
-        for (;;) {
+        while(1){
             
             socklen_t addr_len = sizeof(client_addr);
             
             //accept init ACCEPT()
            if ((client_socket = accept(connector, (struct sockaddr *) &client_addr, &addr_len)) < 0){           
            
-               perror("accept"); 
+               perror("accept error"); 
                continue; 
            }
 
