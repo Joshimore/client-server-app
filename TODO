@@ -25,6 +25,6 @@ for carrying out all the operations necessary for the file transfer.
 
 -------------
 TODO:
-1. A Server. A process that will be waiting for the connections to arrive.
+1. A Server. A process that will be waiting for the connections to arrive. (DONE)
 2. A Client. A process that will establish the connection
 3. Establish connection
