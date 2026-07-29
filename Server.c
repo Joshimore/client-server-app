@@ -41,19 +41,28 @@ int main(){
     }
         
         //listen init LISTEN()
-        listen(connector, 1);
+        listen(connector, 5);
         printf("Server started...");
-        printf("Listening port 9999");
+        printf("Listening port 9999\n");
 
-        if ((client_socket = accept(connector, (struct sockaddr *) &client_addr, &addr_len)) < 0){
+        for (;;) {
+            
+            socklen_t addr_len = sizeof(client_addr);
+            
+            client_socket = accept(connector, (struct sockaddr *)&client_addr, &addr_len);
+            
+            if (client_socket < 0) { 
+                
+                perror("accept"); 
+                continue; 
+            }
 
-            perror("accept failed");
-            exit(1);
+        
 
+            close(client_socket);      
         }
 
-    close(client_socket);
-    close(connector);
+        close(connector);
 
 
     return 0;
