@@ -2,7 +2,7 @@
 
 /*STRUCT TO DO: 
 
-  SOCKET()done -> BIND()done -> LISTEN()done -> ACCEPT()
+  SOCKET()done -> BIND()done -> LISTEN()done -> ACCEPT()done
 
 */
 
@@ -45,7 +45,7 @@ int main(){
 
         printf("Server started...\n");
         
-        sleep(3);
+        sleep(2);
         
         printf("Listening port 9999\n");
 
