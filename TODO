@@ -1,0 +1,29 @@
+Implement a client-server application using sockets, 
+whose functionality will be the transmission 
+of a file from the server to the client.
+
+The exercise will consist of two parts (processes):
+
+The server. A process that will be waiting for connections to arrive from the client 
+and, once the connection is established, 
+will transfer to the client the contents of a file named "Google.html". 
+The contents of the file will be the source code of Google's web page.
+
+
+The client. A process that will establish the connection with the server, 
+receive the contents of the file, and display it on screen.
+
+The client will run on the local machine and will be invoked with the command:
+
+Cliente IP_Servidor
+
+The server will be launched with the command Server 
+and must be listening at all times on port 9999, 
+ready to accept connections. After a connection request from a client, 
+it must create a child process that will be responsible 
+for carrying out all the operations necessary for the file transfer.
+
+-------------
+TODO:
+1. A Server. A process that will be waiting for the connections to arrive.
+2. A Client. A process that will establish the connection
