@@ -20,11 +20,11 @@ int main(){
     int connector; 
     struct sockaddr_in name;
 
-    //socket initialization
+    //socket initialization SOCKET()
     if((connector = socket(AF_INET, SOCK_STREAM, 0)) < 0){
 
        perror("Socket malfunction"); 
-       return 0;
+       exit(1);
 
     }
 
@@ -34,6 +34,12 @@ int main(){
     name.sin_port = htons(9999); 
     name.sin_addr.s_addr = htonl(INADDR_ANY);
 
+    //bind init BIND()
+    if (bind(connector, (struct sockaddr *) &name, sizeof(name)) < 0) {
+        
+        perror("bind failed");
+        exit(1);
+    }
 
 
 //    listen()
