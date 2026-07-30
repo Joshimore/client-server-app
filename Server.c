@@ -14,10 +14,14 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+#define BUFFER_SIZE 1024
+
 
 int main(){
 
     int connector, client_socket; 
+    FILE *file;
+    char buffer[BUFFER_SIZE];
 
 
     //socket initialization SOCKET()
@@ -72,7 +76,29 @@ int main(){
                continue; 
            }
 
-        
+            pid_t process = fork();
+
+            if (process < 0){
+
+                printf("Fork error");
+                exit(1);
+
+            }
+
+            file = fopen("Google.html", "rb");
+            
+            if (file == NULL) {
+
+                perror("File not found");
+                exit(1);
+           
+            } 
+
+            while (fread(buffer, 1, BUFFER_SIZE, file) > 0) {
+                
+                send(client_socket, buffer, BUFFER_SIZE, 0);
+           
+            }
 
             close(client_socket);      
         }

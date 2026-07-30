@@ -37,6 +37,7 @@ int main(){
     server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
 
+
     if((connect(client_connector, (struct sockaddr *) &server_addr, addr_len )) < 0){
 
         perror("Connection with server failed\n");
