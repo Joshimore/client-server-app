@@ -32,7 +32,7 @@ int main(){
 
     }
    
-    printf("Socket initialized\n");
+    printf("Server socket initialized\n");
     sleep(1);
     
     struct sockaddr_in server_addr;
@@ -50,20 +50,18 @@ int main(){
         exit(1);
     }
 
-    printf("Bind is done\n");
+    printf("Bind to port 9999\n");
     sleep(1);
         
         //listen init LISTEN()
         if(listen(connector, 5) < 0){
 
            perror("listen error"); 
+           exit(1);
         }
-
-        printf("Server started...\n\n");
         
-        sleep(2);
-        
-        printf("Listening port 9999\n");
+        sleep(2);        
+        printf("Listening...\n");
 
         while(1){
             
@@ -76,35 +74,60 @@ int main(){
                continue; 
            }
 
+           printf("Client connected\n");
+
             pid_t process = fork();
 
             if (process < 0){
 
                 printf("Fork error");
-                exit(1);
+                close(client_socket);
+                continue;
 
             }
 
-            file = fopen("Google.html", "rb");
+            if(process == 0){
+
+                close(connector);
+
+                file = fopen("Google.html", "rb");
+
+                if (file == NULL) {
+
+                    perror("File not found");
+                    close(client_socket);
+                    _exit(1);
+
+                } 
+
             
-            if (file == NULL) {
 
-                perror("File not found");
-                exit(1);
-           
-            } 
+            size_t n;
 
-            while (fread(buffer, 1, BUFFER_SIZE, file) > 0) {
+            while ((n = fread(buffer, 1, BUFFER_SIZE, file)) > 0) {
                 
-                send(client_socket, buffer, BUFFER_SIZE, 0);
+                if (send(client_socket, buffer, n, 0) < 0){
+
+                    perror("Error while sending a message");
+                    break;
+
+                }
            
             }
+    
+            fclose(file);
+            close(client_socket);
 
-            close(client_socket);      
+            printf("File was uploaded to a client\n");
+
+
+            exit(1);
+
+             
         }
+        close(client_socket);
 
-        close(connector);
-
+    }
 
     return 0;
 
