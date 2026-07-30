@@ -55,7 +55,7 @@ int main(){
            perror("listen error"); 
         }
 
-        printf("Server started...\n");
+        printf("Server started...\n\n");
         
         sleep(2);
         

@@ -36,14 +36,17 @@ int main(){
     server_addr.sin_port = htons(9999); 
     server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
+
     if((connect(client_connector, (struct sockaddr *) &server_addr, addr_len )) < 0){
 
-        perror("Client connect error");
+        perror("Connection with server failed\n");
         exit(1);
 
-     }
+    }
 
+    printf("Connected to the server\n");
 
+    close(client_connector);
 
 
     return 0;
