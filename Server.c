@@ -18,27 +18,36 @@
 int main(){
 
     int connector, client_socket; 
-    struct sockaddr_in server_addr, client_addr;
-    socklen_t addr_len = sizeof(client_addr);
+
 
     //socket initialization SOCKET()
     if((connector = socket(AF_INET, SOCK_STREAM, 0)) < 0){
 
-       perror("Socket malfunction"); 
+       perror("Server socket error"); 
        exit(1);
 
     }
+   
+    printf("Socket initialized\n");
+    sleep(1);
+    
+    struct sockaddr_in server_addr;
+    socklen_t addr_len = sizeof(server_addr);
+    
 
-    client_addr.sin_family = AF_INET;
-    client_addr.sin_port = htons(9999); 
-    client_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_port = htons(9999); 
+    server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
     //bind init BIND()
-    if (bind(connector, (struct sockaddr *) &client_addr, addr_len) < 0) {
+    if (bind(connector, (struct sockaddr *) &server_addr, addr_len) < 0) {
         
-        perror("bind failed");
+        perror("Server bind failed");
         exit(1);
     }
+
+    printf("Bind is done\n");
+    sleep(1);
         
         //listen init LISTEN()
         if(listen(connector, 5) < 0){
@@ -54,12 +63,12 @@ int main(){
 
         while(1){
             
-            socklen_t addr_len = sizeof(client_addr);
+            socklen_t addr_len = sizeof(server_addr);
             
             //accept init ACCEPT()
-           if ((client_socket = accept(connector, (struct sockaddr *) &client_addr, &addr_len)) < 0){           
+           if ((client_socket = accept(connector, (struct sockaddr *) &server_addr, &addr_len)) < 0){           
            
-               perror("accept error"); 
+               perror("Server accept error"); 
                continue; 
            }
 
